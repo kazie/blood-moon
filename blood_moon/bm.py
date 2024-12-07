@@ -3,11 +3,11 @@ from datetime import UTC, datetime, timedelta
 import rich_click as click
 from click import get_current_context
 from dotenv import load_dotenv
-from lamp import connect_and_get_bridge, get_moon_lamp, set_moon_lamp_red
 from phue import PhueRegistrationException
 from rich.console import Console
 
 from blood_moon import moon_phase
+from blood_moon.lamp import connect_and_get_bridge, get_moon_lamp, set_moon_lamp_red
 from blood_moon.moon_phase import get_closest_full_moon, is_within
 
 load_dotenv()
@@ -15,7 +15,9 @@ load_dotenv()
 # Set up rich-click to be the default formatter
 click.rich_click.USE_RICH_MARKUP = True
 # Create a console instance for rich output
-console = Console()
+console = Console(record=True)
+# Force colors
+click.rich_click.COLOR_SYSTEM = "truecolor"
 
 
 @click.command()
@@ -105,6 +107,7 @@ def blood_moon(**kwargs):
             ctx.exit(0)
         case _:
             console.print(ctx.get_help())
+            console.save_svg("cli.svg")
             ctx.exit(0)
 
 
