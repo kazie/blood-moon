@@ -21,12 +21,12 @@ console = Console()
 @click.command()
 @click.option(
     "-r",
-    "--run-if-blood_moon-phase",
+    "--run-if-blood-moon-phase",
     "scheduled_run",
     default=False,
     flag_value=True,
     type=bool,
-    help="Turns on the [red]red[/red] blood blood_moon if it is currently close to a full blood_moon.",
+    help="Turns on the [red]red[/red] blood moon if it is currently close to a full blood_moon.",
 )
 @click.option(
     "-c",
@@ -85,12 +85,12 @@ def blood_moon(**kwargs):
                 now = datetime.now(UTC)
                 if next_full_moon < now:
                     console.print(
-                        f"The blood blood_moon has already risen, and rose at [bright_cyan]{next_full_moon}[/bright_cyan]"
+                        f"The blood moon has already risen, and rose at [bright_cyan]{next_full_moon}[/bright_cyan]"
                     )
                     ctx.exit(0)
                 else:
                     console.print(
-                        f"The blood blood_moon has not risen yet, next full blood_moon is at [bright_cyan]{next_full_moon}[/bright_cyan]"
+                        f"The blood moon has not risen yet, next full blood_moon is at [bright_cyan]{next_full_moon}[/bright_cyan]"
                     )
                     ctx.exit(0)
             bridge = connect_and_get_bridge()

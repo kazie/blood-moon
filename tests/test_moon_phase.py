@@ -13,7 +13,7 @@ def test_get_next_full_moon_live():
 
 
 def test_get_next_full_moon_known_date(freezer):
-    # 15 May 2022 (US) was a super blood blood_moon
+    # 15 May 2022 (US) was a super blood moon
     freezer.move_to("2022-05-15")
     next_phase = get_closest_full_moon()
     assert next_phase == datetime(

@@ -4,4 +4,4 @@ Description=Run bm.py with Poetry
 [Service]
 Type=simple
 WorkingDirectory=/path/to/your/project
-ExecStart=/bin/sh -c "source $(poetry env info --path)/bin/activate && poetry run python blood_moon/bm.py --run-if-blood_moon-phase"
+ExecStart=/usr/bin/poetry run blood_moon

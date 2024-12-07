@@ -26,6 +26,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 build = "scripts.build:build"
+blood_moon = "scripts.build:blood_moon"
 
 [tool.isort]
 profile = "black"
