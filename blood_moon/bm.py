@@ -4,6 +4,7 @@ import rich_click as click
 from click import get_current_context
 from dotenv import load_dotenv
 from lamp import connect_and_get_bridge, get_moon_lamp, set_moon_lamp_red
+from phue import PhueRegistrationException
 from rich.console import Console
 
 from blood_moon import moon_phase
@@ -108,4 +109,10 @@ def blood_moon(**kwargs):
 
 
 if __name__ == "__main__":
-    blood_moon()
+    try:
+        blood_moon()
+    except PhueRegistrationException as e:
+        ctx = get_current_context()
+        console.print(
+            "You are not registered with the Hue bridge yet, press [bold]the button[/bold] on your bridge, and try again"
+        )
