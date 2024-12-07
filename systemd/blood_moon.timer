@@ -1,9 +1,9 @@
 [Unit]
-Description=Timer for blood_moon.service between 15:00 and 24:00 every 12 hours
+Description=Timer for blood_moon.service between 15:00 and midnight
 
 [Timer]
-OnCalendar=Mon..Sun *-*-* 15-23:0/1:00
-Persistent=true
+OnCalendar=15..23:00..59 Europe/Stockholm
+Persistent=false
 
 [Install]
 WantedBy=timers.target
