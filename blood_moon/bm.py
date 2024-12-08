@@ -107,7 +107,6 @@ def blood_moon(**kwargs):
             ctx.exit(0)
         case _:
             console.print(ctx.get_help())
-            console.save_svg("cli.svg")
             ctx.exit(0)
 
 
