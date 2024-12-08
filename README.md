@@ -1,6 +1,7 @@
 # Blood Moon
 
-![](./help.svg)
+![`python blood_moon/bm.py --help | python scripts/export_svg.py`](./help.svg)
+
 
 ## Description
 **Blood Moon** is a script designed to control the lighting of a moon-themed lamp equipped with a Philips Hue light.
