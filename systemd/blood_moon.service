@@ -4,4 +4,5 @@ Description=Run bm.py with Poetry
 [Service]
 Type=simple
 WorkingDirectory=/path/to/your/project
+ExecStartPre=/usr/bin/poetry install
 ExecStart=/usr/bin/poetry run blood_moon
