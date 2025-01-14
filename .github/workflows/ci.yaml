@@ -17,7 +17,7 @@
        - name: Set up Python
          uses: actions/setup-python@v4
          with:
-           python-version: '3.12'  # Specify the Python version you are using
+           python-version: '3.13'  # Specify the Python version you are using
 
        - name: Install Poetry
          run: curl -sSL https://install.python-poetry.org | python3 -
