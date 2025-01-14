@@ -1,16 +1,42 @@
-   version: 2
-   updates:
-     - package-ecosystem: "pip"
-       directory: "/"  # Adjust this if your `pyproject.toml` is in a different directory
-       schedule:
-         interval: "weekly"
-       commit-message:
-         prefix: "deps"
-       open-pull-requests-limit: 1
-       pull-request-branch-name:
-         prefix: "dependabot"
-       rebase-strategy: "enabled"
-       groups:
-         all-dependencies:
-           patterns:
-             - "*"
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"  # Adjust this if your `pyproject.toml` is in a different directory
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "kazie"
+    commit-message:
+      prefix: "deps"
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      prefix: "dependabot"
+    rebase-strategy: "enabled"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "github-actions" # Use github-actions for workflow updates
+    directory: "/" # Location of GitHub Actions workflows
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "kazie"
+    commit-message:
+      prefix: "chore"
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
