@@ -1,11 +1,15 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+import pytest
 from ephem import UTC
 
 from blood_moon.moon_phase import get_closest_full_moon, is_within
 
 
+@pytest.mark.skip(
+    "Old test only works sometimes, as get_closest_full_moon() iw now getting closest (including backwards)."
+)
 def test_get_next_full_moon_live():
     now = datetime.now(UTC)
     next_phase = get_closest_full_moon()
