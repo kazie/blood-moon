@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"  # Adjust this if your `pyproject.toml.bak` is in a different directory
+    directory: "/"  # Adjust this if your `pyproject.toml` is in a different directory
     schedule:
       interval: "weekly"
     reviewers:
