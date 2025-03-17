@@ -15,7 +15,7 @@ This script adjusts the lamp's color to a striking red when a full blood moon is
 - Various command-line options to check, force a run, or use scheduled automation.
 
 ## Dependencies
-This project requires Python 3.13 or newer, and the dependencies listed in [pyproject.toml](pyproject.toml) are managed by Poetry.
+This project requires Python 3.13 or newer, and the dependencies listed in [pyproject.toml](pyproject.toml.bak) are managed by Poetry.
 
 ## Installation
 1. **Clone the Repository**:
@@ -24,14 +24,14 @@ This project requires Python 3.13 or newer, and the dependencies listed in [pypr
    cd blood_moon
    ```
 
-2. **Install Poetry** (if not already installed):
-   ```bash
-   pip install poetry
-   ```
+2. **Install uv** (if not already installed):
+   - `uv` for packages
+   - `ruff` for formatting
+   - `hatchling` for build system (`uv` does not support `run` itself)
 
 3. **Install the Project Dependencies**:
    ```bash
-   poetry install
+   uv sync
    ```
 
 4. **Environment Configuration**:
@@ -46,7 +46,7 @@ You can run tests for the Blood Moon project using Poetry.
 The command to execute the tests is:
 
 ```bash
-poetry run build
+uv run build
 ```
 
 This command will trigger the test suite configured in your development environment.
@@ -56,17 +56,17 @@ Ensure all tests pass to verify that the functionalities behave as expected.
 Run the script using one of its command-line options:
 - **Check the moon phase**:
   ```bash
-  poetry run blood_moon --check
+  uv run blood_moon --check
   ```
 - **Force set the lamp**:
   ```bash
-  poetry run blood_moon --force-run
+  uv run blood_moon --force-run
   ```
 - **Sync with the Philips Hue bridge**:
   ```bash
-  poetry run blood_moon --sync
+  uv run blood_moon --sync
   ```
 - **Run in scheduled mode**:
   ```bash
-  poetry run blood_moon --run-if-blood-moon-phase
+  uv run blood_moon --run-if-blood-moon-phase
   ```

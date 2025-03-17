@@ -1,8 +1,8 @@
 [Unit]
-Description=Run bm.py with Poetry
+Description=Run bm.py with uv
 
 [Service]
 Type=simple
 WorkingDirectory=/path/to/your/project
-ExecStartPre=/usr/bin/poetry install
-ExecStart=/usr/bin/poetry run blood_moon
+ExecStartPre=/usr/bin/uv sync
+ExecStart=/usr/bin/uv run blood_moon

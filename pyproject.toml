@@ -1,39 +1,38 @@
-[tool.poetry]
-name = "blood_moon"
-version = "1.1.0"
+[project]
+name = "blood-moon"
+version = "2.0.0"
 description = "A small script to control the lighting of the moon that has a philips hue lamp inside"
-authors = ["Petter Salminen <kemikaze+github@gmail.com>"]
 readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "phue>=1.1",
+    "ephem>=4.1.6",
+    "rich-click>=1.8.5",
+    "python-dotenv>=1.0.1"
+]
 
-[tool.poetry.dependencies]
-python = "~3.13"
-phue = "^1.1"
-ephem = "^4.1.6"
-rich-click = "^1.8.5"
-python-dotenv = "^1.0.1"
 
-[tool.poetry.group.dev.dependencies]
-black = ">24"
-isort = ">5"
-pytest = ">8"
-pytest-freezer = "^0.4.9"
-pytest-cov = "^6.0.0"
-pytest-mock = "^3.14.0"
+[dependency-groups]
+dev = [
+    "ruff>=0.11.0",
+    "pytest>=8",
+    "pytest-freezer>=0.4.9",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0"
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.scripts]
+[project.scripts]
 build = "scripts.build:build"
 blood_moon = "scripts.build:blood_moon"
-
-[tool.isort]
-profile = "black"
 
 [tool.coverage.run]
 # Sure the main script doens't have coverage, but I don't care right now. :)
 omit = ["blood_moon/bm.py"]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 norecursedirs = ["scripts"]

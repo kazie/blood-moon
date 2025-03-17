@@ -1,29 +1,29 @@
-   name: CI
+name: CI
 
-   on:
-     push:
-       branches: [ master ]
-     pull_request:
-       branches: [ master ]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-   jobs:
-     build:
-       runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-       steps:
-       - name: Checkout code
-         uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-       - name: Set up Python
-         uses: actions/setup-python@v4
-         with:
-           python-version: '3.13'  # Specify the Python version you are using
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-       - name: Install Poetry
-         run: curl -sSL https://install.python-poetry.org | python3 -
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
 
-       - name: Install dependencies
-         run: poetry install
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
 
-       - name: Run build
-         run: poetry run build
+      - name: Run build
+        run: uv run pytest tests
