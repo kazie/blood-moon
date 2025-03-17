@@ -71,7 +71,7 @@ def blood_moon(**kwargs):
         case {"check": True}:
             within = is_within(check=when, within=timedelta(hours=24))
             console.print(
-                f"Closest full blood_moon is at [bright_cyan]{when}[/bright_cyan], thus we would {"" if within else "[bold red]not[/bold red]"} activate right now."
+                f"Closest full blood_moon is at [bright_cyan]{when}[/bright_cyan], thus we would {'' if within else '[bold red]not[/bold red]'} activate right now."
             )
             ctx.exit(0 if within else 1)
         case {"sync": True}:
