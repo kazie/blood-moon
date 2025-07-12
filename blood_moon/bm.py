@@ -113,7 +113,7 @@ def blood_moon(**kwargs):
 if __name__ == "__main__":
     try:
         blood_moon()
-    except PhueRegistrationException as e:
+    except PhueRegistrationException:
         ctx = get_current_context()
         console.print(
             "You are not registered with the Hue bridge yet, press [bold]the button[/bold] on your bridge, and try again"
