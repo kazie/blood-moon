@@ -18,7 +18,9 @@ dev = [
     "pytest>=8",
     "pytest-freezer>=0.4.9",
     "pytest-cov>=6.0.0",
-    "pytest-mock>=3.14.0"
+    "pytest-mock>=3.14.0",
+    "hatchling>=1.27.0",
+    "slotscheck>=0.19.1",
 ]
 
 [build-system]
@@ -72,8 +74,8 @@ exclude = [
 line-length = 88
 indent-width = 4
 
-# Assume Python 3.9
-target-version = "py39"
+# Assume Python 3.13
+target-version = "py313"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
