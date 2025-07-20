@@ -25,5 +25,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      - name: Linting for code errors
+        run: uv run ruff check .
+
+      - name: Slots-checking
+        run: uv run slotscheck blood_moon/
+
       - name: Run build
         run: uv run pytest tests
