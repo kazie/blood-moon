@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
+  - package-ecosystem: "uv"
     directory: "/"  # Adjust this if your `pyproject.toml` is in a different directory
     schedule:
       interval: "weekly"
