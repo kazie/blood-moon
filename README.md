@@ -15,7 +15,7 @@ This script adjusts the lamp's color to a striking red when a full blood moon is
 - Various command-line options to check, force a run, or use scheduled automation.
 
 ## Dependencies
-This project requires Python 3.13 or newer, and the dependencies listed in [pyproject.toml](pyproject.toml) are managed by Poetry.
+This project requires Python 3.14 or newer, and the dependencies listed in [pyproject.toml](pyproject.toml) are managed by Poetry.
 
 ## Installation
 1. **Clone the Repository**:
