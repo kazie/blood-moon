@@ -1,6 +1,11 @@
 import pytest
 
-from blood_moon.lamp import connect_and_get_bridge, get_moon_lamp, set_moon_lamp_red
+from blood_moon.lamp import (
+    connect_and_get_bridge,
+    get_moon_lamp,
+    set_moon_lamp_red,
+    set_moon_lamp_teal,
+)
 
 # Mock environment variables
 MOCK_HUE_BRIDGE_IP = "hue-bridge-ip"
@@ -70,5 +75,29 @@ def test_no_set_moon_lamp_red_when_off(mocker):
     type(mock_light).xy = xy_property
 
     set_moon_lamp_red(mock_light)
+
+    assert not mock_light.xy.called
+
+
+def test_set_moon_lamp_teal_when_on(mocker):
+    mock_light = mocker.Mock()
+    mock_light.on = True
+    # Use PropertyMock to monitor the .xy property
+    xy_property = mocker.PropertyMock()
+    type(mock_light).xy = xy_property
+
+    set_moon_lamp_teal(mock_light)
+
+    xy_property.assert_called_once_with([0.17, 0.34])
+
+
+def test_no_set_moon_lamp_teal_when_off(mocker):
+    mock_light = mocker.Mock()
+    mock_light.on = False
+    # Use PropertyMock to monitor the .xy property
+    xy_property = mocker.PropertyMock()
+    type(mock_light).xy = xy_property
+
+    set_moon_lamp_teal(mock_light)
 
     assert not mock_light.xy.called

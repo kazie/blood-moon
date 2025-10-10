@@ -6,14 +6,18 @@ from dotenv import load_dotenv
 from phue import PhueRegistrationException
 from rich.console import Console
 
-from blood_moon import moon_phase
-from blood_moon.lamp import connect_and_get_bridge, get_moon_lamp, set_moon_lamp_red
-from blood_moon.moon_phase import get_closest_full_moon, is_within
+from blood_moon.lamp import (
+    connect_and_get_bridge,
+    get_moon_lamp,
+    set_moon_lamp_red,
+    set_moon_lamp_teal,
+)
+from blood_moon.moon_phase import get_closest_full_moon, get_closest_new_moon, is_within
 
 load_dotenv()
 
 # Set up rich-click to be the default formatter
-click.rich_click.USE_RICH_MARKUP = True
+click.rich_click.TEXT_MARKUP = "rich"
 # Create a console instance for rich output
 console = Console(record=True)
 # Force colors
@@ -23,12 +27,12 @@ click.rich_click.COLOR_SYSTEM = "truecolor"
 @click.command()
 @click.option(
     "-r",
-    "--run-if-blood-moon-phase",
+    "--run-if-moon-phase",
     "scheduled_run",
     default=False,
     flag_value=True,
     type=bool,
-    help="Turns on the [red]red[/red] blood moon if it is currently close to a full blood_moon.",
+    help="Scheduled run: if near a full moon turns [red]red[/red]; if near a new moon turns [cyan]teal[/cyan].",
 )
 @click.option(
     "-c",
@@ -37,7 +41,7 @@ click.rich_click.COLOR_SYSTEM = "truecolor"
     default=False,
     flag_value=True,
     type=bool,
-    help="Returns if would set lamp or not, but won't actually set it",
+    help="Show whether we'd set the lamp to [red]red[/red] (full moon) or [cyan]teal[/cyan] (new moon) right now, without actually changing it.",
 )
 @click.option(
     "-s",
@@ -49,31 +53,47 @@ click.rich_click.COLOR_SYSTEM = "truecolor"
     help="Use this to check if hue connection is working, or to sync once pressed hue button",
 )
 @click.option(
-    "-f",
-    "--force-run",
-    "force",
+    "-fr",
+    "--force-red",
+    "force_red",
     default=False,
     flag_value=True,
     type=bool,
     help="Will set the lamp colour to [bold red]red[/bold red] right away, but only if lamp is on",
 )
+@click.option(
+    "-ft",
+    "--force-teal",
+    "force_teal",
+    default=False,
+    flag_value=True,
+    type=bool,
+    help="Will set the lamp colour to [bold cyan]teal[/bold cyan] right away, but only if lamp is on",
+)
 def blood_moon(**kwargs):
     """
-    A simple program to steer your blood_moon light.
-    When you are close to a [bold]full blood_moon[/bold], your [underline]blood_moon[/underline] will turn [bold red]red[/bold red].
+    A simple program to steer your moon light.
 
-    This only happens when a current full blood_moon is within 24 hours (before or after) the current time, and your lamp is already turned on.
+    - Near a [bold]full moon[/bold] (within 24 hours), your [underline]moon[/underline] will turn [bold red]red[/bold red].
+    - Near a [bold]new moon[/bold] (within 24 hours), it will turn [cyan]teal[/cyan].
+
+    The lamp color is only changed if the lamp is already turned on.
     """
     load_dotenv()
-    when = moon_phase.get_closest_full_moon()
     ctx = get_current_context()
     match kwargs:
         case {"check": True}:
-            within = is_within(check=when, within=timedelta(hours=24))
+            full_when = get_closest_full_moon()
+            full_within = is_within(check=full_when, within=timedelta(hours=24))
+            new_when = get_closest_new_moon()
+            new_within = is_within(check=new_when, within=timedelta(hours=24))
             console.print(
-                f"Closest full blood_moon is at [bright_cyan]{when}[/bright_cyan], thus we would {'' if within else '[bold red]not[/bold red]'} activate right now."
+                f"Closest full moon is at [bright_cyan]{full_when}[/bright_cyan], thus we would {'' if full_within else '[bold red]not[/bold red]'} activate [red]red[/red] right now."
             )
-            ctx.exit(0 if within else 1)
+            console.print(
+                f"Closest new moon is at [bright_cyan]{new_when}[/bright_cyan], thus we would {'' if new_within else '[bold red]not[/bold red]'} activate [cyan]teal[/cyan] right now."
+            )
+            ctx.exit(0 if (full_within or new_within) else 1)
         case {"sync": True}:
             connect_and_get_bridge()
             console.print(
@@ -81,29 +101,48 @@ def blood_moon(**kwargs):
             )
             ctx.exit(0)
         case {"scheduled_run": True}:
-            next_full_moon = get_closest_full_moon()
-            is_soon = is_within(check=next_full_moon, within=timedelta(hours=24))
-            if not is_soon:
+            full_when = get_closest_full_moon()
+            full_within = is_within(check=full_when, within=timedelta(hours=24))
+            new_when = get_closest_new_moon()
+            new_within = is_within(check=new_when, within=timedelta(hours=24))
+            if not (full_within or new_within):
                 now = datetime.now(UTC)
-                if next_full_moon < now:
+                # Inform about next occurrences
+                if full_when < now:
                     console.print(
-                        f"The blood moon has already risen, and rose at [bright_cyan]{next_full_moon}[/bright_cyan]"
+                        f"The blood moon has already risen, and rose at [bright_cyan]{full_when}[/bright_cyan]"
                     )
-                    ctx.exit(0)
                 else:
                     console.print(
-                        f"The blood moon has not risen yet, next full blood_moon is at [bright_cyan]{next_full_moon}[/bright_cyan]"
+                        f"The blood moon has not risen yet, next full moon is at [bright_cyan]{full_when}[/bright_cyan]"
                     )
-                    ctx.exit(0)
+                if new_when < now:
+                    console.print(
+                        f"The new moon has already passed at [bright_cyan]{new_when}[/bright_cyan]"
+                    )
+                else:
+                    console.print(
+                        f"The new moon has not arrived yet, next new moon is at [bright_cyan]{new_when}[/bright_cyan]"
+                    )
+                ctx.exit(0)
             bridge = connect_and_get_bridge()
             moon = get_moon_lamp(bridge)
-            set_moon_lamp_red(moon)
+            if full_within:
+                set_moon_lamp_red(moon)
+            elif new_within:
+                set_moon_lamp_teal(moon)
             ctx.exit(0)
-        case {"force": True}:
+        case {"force_red": True}:
             bridge = connect_and_get_bridge()
             moon = get_moon_lamp(bridge)
             set_moon_lamp_red(moon)
             console.print("If on, the blood_moon should [red]now be red[/red]")
+            ctx.exit(0)
+        case {"force_teal": True}:
+            bridge = connect_and_get_bridge()
+            moon = get_moon_lamp(bridge)
+            set_moon_lamp_teal(moon)
+            console.print("If on, the blood_moon should now be teal")
             ctx.exit(0)
         case _:
             console.print(ctx.get_help())
@@ -114,7 +153,6 @@ if __name__ == "__main__":
     try:
         blood_moon()
     except PhueRegistrationException:
-        ctx = get_current_context()
         console.print(
             "You are not registered with the Hue bridge yet, press [bold]the button[/bold] on your bridge, and try again"
         )

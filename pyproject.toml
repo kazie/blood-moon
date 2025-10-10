@@ -1,6 +1,6 @@
 [project]
 name = "blood-moon"
-version = "2.0.0"
+version = "3.0.0"
 description = "A small script to control the lighting of the moon that has a philips hue lamp inside"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -21,6 +21,7 @@ dev = [
     "pytest-mock>=3.15.1",
     "hatchling>=1.27.0",
     "slotscheck>=0.19.1",
+    "inline-snapshot>=0.29.3"
 ]
 
 [build-system]
@@ -30,14 +31,17 @@ build-backend = "hatchling.build"
 [project.scripts]
 build = "scripts.build:build"
 blood_moon = "scripts.build:blood_moon"
+help_svg = "scripts.build:help_svg"
 
 [tool.coverage.run]
-# Sure the main script doens't have coverage, but I don't care right now. :)
-omit = ["blood_moon/bm.py"]
+# Include all files in coverage; bm.py is now covered by tests.
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 norecursedirs = ["scripts"]
+
+[tool.inline-snapshot]
+format-command="ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename}"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.

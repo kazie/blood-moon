@@ -14,5 +14,18 @@ def build():
 
 def blood_moon():
     subprocess.run(
-        "python blood_moon/bm.py --run-if-blood-moon-phase", check=True, shell=True
+        "python blood_moon/bm.py --run-if-moon-phase", check=True, shell=True
+    )
+
+
+def help_svg():
+    """Export the CLI help to an SVG (help.svg) using the rich console renderer.
+
+    Run this inside the uv environment via: `uv run help_svg`.
+    """
+    # Pipeline the help text into the SVG exporter script
+    subprocess.run(
+        "python blood_moon/bm.py --help | python scripts/export_svg.py",
+        check=True,
+        shell=True,
     )
