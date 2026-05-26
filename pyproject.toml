@@ -14,7 +14,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.13",
+    "ruff>=0.15.14",
     "pytest>=9.0.3",
     "pytest-freezer>=0.4.9",
     "pytest-cov>=7.0.0",
