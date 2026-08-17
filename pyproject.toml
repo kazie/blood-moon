@@ -14,14 +14,14 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff>=0.16.2",
+    "ruff>=0.16.3",
     "pytest>=9.1.1",
     "pytest-freezer>=0.4.9",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
     "hatchling>=1.27.0",
     "slotscheck>=0.20.1",
-    "inline-snapshot>=0.35.3"
+    "inline-snapshot>=0.35.4"
 ]
 
 [build-system]
