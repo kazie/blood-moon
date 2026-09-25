@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from inline_snapshot import snapshot

@@ -17,13 +17,8 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: "Set up Python"
-        uses: actions/setup-python@v7
-        with:
-          python-version-file: ".python-version"
-
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: uv sync --locked --all-extras --dev
 
       - name: Check formatting
         run: uv run ruff format --check .
@@ -34,5 +29,5 @@ jobs:
       - name: Slots-checking
         run: uv run slotscheck blood_moon/
 
-      - name: Run build
-        run: uv run pytest tests
+      - name: Run tests with coverage
+        run: uv run pytest --cov=blood_moon tests
