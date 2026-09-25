@@ -19,7 +19,6 @@ dev = [
     "pytest-freezer>=0.4.9",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
-    "hatchling>=1.27.0",
     "slotscheck>=0.20.1",
     "inline-snapshot>=0.35.4"
 ]
@@ -33,8 +32,8 @@ build = "scripts.build:build"
 blood_moon = "scripts.build:blood_moon"
 help_svg = "scripts.build:help_svg"
 
-[tool.coverage.run]
-# Include all files in coverage; bm.py is now covered by tests.
+[tool.coverage.report]
+fail_under = 100
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
@@ -44,80 +43,16 @@ norecursedirs = ["scripts"]
 format-command="ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename}"
 
 [tool.ruff]
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".ipynb_checkpoints",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    ".vscode",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "site-packages",
-    "venv",
-]
-
-# Same as Black.
 line-length = 88
-indent-width = 4
-
-# Assume Python 3.14
 target-version = "py314"
 
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-select = ["E4", "E7", "E9", "F", "DTZ"]
-ignore = []
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
-
-# Enable auto-formatting of code examples in docstrings. Markdown,
-# reStructuredText code/literal blocks and doctests are all supported.
-#
-# This is currently disabled by default, but it is planned for this
-# to be opt-out in the future.
-docstring-code-format = false
-
-# Set the line length limit used when formatting code snippets in
-# docstrings.
-#
-# This only has an effect when the `docstring-code-format` setting is
-# enabled.
-docstring-code-line-length = "dynamic"
+select = [
+    "E4", "E7", "E9", # pycodestyle errors
+    "F",              # pyflakes
+    "DTZ",            # naive datetimes
+    "I",              # import sorting
+    "UP",             # pyupgrade
+    "B",              # bugbear
+    "SIM",            # simplify
+]
